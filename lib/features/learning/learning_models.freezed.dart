@@ -14,6 +14,222 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+CoursePart _$CoursePartFromJson(Map<String, dynamic> json) {
+  return _CoursePart.fromJson(json);
+}
+
+/// @nodoc
+mixin _$CoursePart {
+  String get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
+  bool get isCompleted => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $CoursePartCopyWith<CoursePart> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CoursePartCopyWith<$Res> {
+  factory $CoursePartCopyWith(
+          CoursePart value, $Res Function(CoursePart) then) =
+      _$CoursePartCopyWithImpl<$Res, CoursePart>;
+  @useResult
+  $Res call(
+      {String id, String title, String content, bool isCompleted, String type});
+}
+
+/// @nodoc
+class _$CoursePartCopyWithImpl<$Res, $Val extends CoursePart>
+    implements $CoursePartCopyWith<$Res> {
+  _$CoursePartCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? content = null,
+    Object? isCompleted = null,
+    Object? type = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      isCompleted: null == isCompleted
+          ? _value.isCompleted
+          : isCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$CoursePartImplCopyWith<$Res>
+    implements $CoursePartCopyWith<$Res> {
+  factory _$$CoursePartImplCopyWith(
+          _$CoursePartImpl value, $Res Function(_$CoursePartImpl) then) =
+      __$$CoursePartImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id, String title, String content, bool isCompleted, String type});
+}
+
+/// @nodoc
+class __$$CoursePartImplCopyWithImpl<$Res>
+    extends _$CoursePartCopyWithImpl<$Res, _$CoursePartImpl>
+    implements _$$CoursePartImplCopyWith<$Res> {
+  __$$CoursePartImplCopyWithImpl(
+      _$CoursePartImpl _value, $Res Function(_$CoursePartImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? content = null,
+    Object? isCompleted = null,
+    Object? type = null,
+  }) {
+    return _then(_$CoursePartImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      isCompleted: null == isCompleted
+          ? _value.isCompleted
+          : isCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CoursePartImpl implements _CoursePart {
+  const _$CoursePartImpl(
+      {required this.id,
+      required this.title,
+      required this.content,
+      this.isCompleted = false,
+      this.type = 'video'});
+
+  factory _$CoursePartImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CoursePartImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String title;
+  @override
+  final String content;
+  @override
+  @JsonKey()
+  final bool isCompleted;
+  @override
+  @JsonKey()
+  final String type;
+
+  @override
+  String toString() {
+    return 'CoursePart(id: $id, title: $title, content: $content, isCompleted: $isCompleted, type: $type)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CoursePartImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.isCompleted, isCompleted) ||
+                other.isCompleted == isCompleted) &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, content, isCompleted, type);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CoursePartImplCopyWith<_$CoursePartImpl> get copyWith =>
+      __$$CoursePartImplCopyWithImpl<_$CoursePartImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CoursePartImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _CoursePart implements CoursePart {
+  const factory _CoursePart(
+      {required final String id,
+      required final String title,
+      required final String content,
+      final bool isCompleted,
+      final String type}) = _$CoursePartImpl;
+
+  factory _CoursePart.fromJson(Map<String, dynamic> json) =
+      _$CoursePartImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get title;
+  @override
+  String get content;
+  @override
+  bool get isCompleted;
+  @override
+  String get type;
+  @override
+  @JsonKey(ignore: true)
+  _$$CoursePartImplCopyWith<_$CoursePartImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Course _$CourseFromJson(Map<String, dynamic> json) {
   return _Course.fromJson(json);
 }
@@ -29,6 +245,7 @@ mixin _$Course {
   String get type => throw _privateConstructorUsedError;
   double get progress => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
+  List<CoursePart> get parts => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +266,8 @@ abstract class $CourseCopyWith<$Res> {
       String duration,
       String type,
       double progress,
-      bool isCompleted});
+      bool isCompleted,
+      List<CoursePart> parts});
 }
 
 /// @nodoc
@@ -74,6 +292,7 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
     Object? type = null,
     Object? progress = null,
     Object? isCompleted = null,
+    Object? parts = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -112,6 +331,10 @@ class _$CourseCopyWithImpl<$Res, $Val extends Course>
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      parts: null == parts
+          ? _value.parts
+          : parts // ignore: cast_nullable_to_non_nullable
+              as List<CoursePart>,
     ) as $Val);
   }
 }
@@ -132,7 +355,8 @@ abstract class _$$CourseImplCopyWith<$Res> implements $CourseCopyWith<$Res> {
       String duration,
       String type,
       double progress,
-      bool isCompleted});
+      bool isCompleted,
+      List<CoursePart> parts});
 }
 
 /// @nodoc
@@ -155,6 +379,7 @@ class __$$CourseImplCopyWithImpl<$Res>
     Object? type = null,
     Object? progress = null,
     Object? isCompleted = null,
+    Object? parts = null,
   }) {
     return _then(_$CourseImpl(
       id: null == id
@@ -193,6 +418,10 @@ class __$$CourseImplCopyWithImpl<$Res>
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      parts: null == parts
+          ? _value._parts
+          : parts // ignore: cast_nullable_to_non_nullable
+              as List<CoursePart>,
     ));
   }
 }
@@ -209,7 +438,9 @@ class _$CourseImpl implements _Course {
       required this.duration,
       required this.type,
       this.progress = 0.0,
-      this.isCompleted = false});
+      this.isCompleted = false,
+      final List<CoursePart> parts = const []})
+      : _parts = parts;
 
   factory _$CourseImpl.fromJson(Map<String, dynamic> json) =>
       _$$CourseImplFromJson(json);
@@ -234,10 +465,18 @@ class _$CourseImpl implements _Course {
   @override
   @JsonKey()
   final bool isCompleted;
+  final List<CoursePart> _parts;
+  @override
+  @JsonKey()
+  List<CoursePart> get parts {
+    if (_parts is EqualUnmodifiableListView) return _parts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_parts);
+  }
 
   @override
   String toString() {
-    return 'Course(id: $id, title: $title, description: $description, category: $category, thumbnailUrl: $thumbnailUrl, duration: $duration, type: $type, progress: $progress, isCompleted: $isCompleted)';
+    return 'Course(id: $id, title: $title, description: $description, category: $category, thumbnailUrl: $thumbnailUrl, duration: $duration, type: $type, progress: $progress, isCompleted: $isCompleted, parts: $parts)';
   }
 
   @override
@@ -259,13 +498,24 @@ class _$CourseImpl implements _Course {
             (identical(other.progress, progress) ||
                 other.progress == progress) &&
             (identical(other.isCompleted, isCompleted) ||
-                other.isCompleted == isCompleted));
+                other.isCompleted == isCompleted) &&
+            const DeepCollectionEquality().equals(other._parts, _parts));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description, category,
-      thumbnailUrl, duration, type, progress, isCompleted);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      category,
+      thumbnailUrl,
+      duration,
+      type,
+      progress,
+      isCompleted,
+      const DeepCollectionEquality().hash(_parts));
 
   @JsonKey(ignore: true)
   @override
@@ -291,7 +541,8 @@ abstract class _Course implements Course {
       required final String duration,
       required final String type,
       final double progress,
-      final bool isCompleted}) = _$CourseImpl;
+      final bool isCompleted,
+      final List<CoursePart> parts}) = _$CourseImpl;
 
   factory _Course.fromJson(Map<String, dynamic> json) = _$CourseImpl.fromJson;
 
@@ -313,6 +564,8 @@ abstract class _Course implements Course {
   double get progress;
   @override
   bool get isCompleted;
+  @override
+  List<CoursePart> get parts;
   @override
   @JsonKey(ignore: true)
   _$$CourseImplCopyWith<_$CourseImpl> get copyWith =>

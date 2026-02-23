@@ -12,6 +12,9 @@ import '../../features/scan/scan_screen.dart';
 import '../../features/onboarding/splash_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../shared/widgets/modern_navigation_bar.dart';
+import '../../features/marketplace/add_product_screen.dart';
+import '../../features/learning/course_detail_screen.dart';
+import '../../features/learning/learning_models.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -32,6 +35,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/marketplace/add',
+        builder: (context, state) => const AddProductScreen(),
+      ),
+      GoRoute(
+        path: '/learning/detail',
+        builder: (context, state) {
+          final course = state.extra as Course;
+          return CourseDetailScreen(course: course);
+        },
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
