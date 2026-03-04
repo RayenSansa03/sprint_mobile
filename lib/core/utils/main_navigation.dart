@@ -12,9 +12,16 @@ import '../../features/scan/scan_screen.dart';
 import '../../features/onboarding/splash_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../shared/widgets/modern_navigation_bar.dart';
-import '../../features/marketplace/add_product_screen.dart';
-import '../../features/learning/course_detail_screen.dart';
 import '../../features/learning/learning_models.dart';
+import '../../features/learning/course_detail_screen.dart';
+import '../../features/learning/course_content_screen.dart';
+import '../../features/marketplace/marketplace_models.dart';
+import '../../features/marketplace/add_product_screen.dart';
+import '../../features/marketplace/product_detail_screen.dart';
+import '../../features/weather/weather_screen.dart';
+import '../../features/weather/weather_detail_screen.dart';
+import '../../features/weather/weather_models.dart';
+import '../../features/profile/profile_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -47,6 +54,33 @@ final routerProvider = Provider<GoRouter>((ref) {
           return CourseDetailScreen(course: course);
         },
       ),
+      GoRoute(
+        path: '/marketplace/detail',
+        builder: (context, state) {
+          final product = state.extra as Product;
+          return ProductDetailScreen(product: product);
+        },
+      ),
+      GoRoute(
+        path: '/learning/content',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final course = extra['course'] as Course;
+          final partIndex = extra['partIndex'] as int;
+          return CourseContentScreen(course: course, partIndex: partIndex);
+        },
+      ),
+      GoRoute(
+        path: '/weather',
+        builder: (context, state) => const WeatherScreen(),
+      ),
+      GoRoute(
+        path: '/weather/detail',
+        builder: (context, state) {
+          final weather = state.extra as LocationWeather;
+          return WeatherDetailScreen(weather: weather);
+        },
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
@@ -68,6 +102,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/scan',
             builder: (context, state) => const ScanScreen(),
+          ),
+          GoRoute(
+            path: '/profile',
+            builder: (context, state) => const ProfileScreen(),
           ),
         ],
       ),
@@ -102,7 +140,7 @@ class MainScreen extends StatelessWidget {
             case 1: context.go('/marketplace'); break;
             case 2: context.go('/scan'); break;
             case 3: context.go('/learning'); break;
-            case 4: /* context.go('/profile'); */ break;
+            case 4: context.go('/profile'); break;
           }
         },
       ),

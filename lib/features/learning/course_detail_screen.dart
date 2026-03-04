@@ -37,7 +37,7 @@ class CourseDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  _buildLearningPath(),
+                  _buildLearningPath(context),
                 ],
               ),
             ),
@@ -96,7 +96,7 @@ class CourseDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLearningPath() {
+  Widget _buildLearningPath(BuildContext context) {
     return Column(
       children: List.generate(course.parts.length, (index) {
         final part = course.parts[index];
@@ -147,7 +147,13 @@ class CourseDetailScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 24),
                   child: GestureDetector(
                     onTap: () {
-                      // Logic to open part content
+                      context.push(
+                        '/learning/content',
+                        extra: {
+                          'course': course,
+                          'partIndex': index,
+                        },
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.all(16),

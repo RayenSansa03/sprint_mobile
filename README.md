@@ -43,5 +43,3 @@ AgriSmart Farmer is a modern Flutter mobile application designed to empower farm
 - `lib/shared`: Reusable widgets and common models.
 - `assets`: Media resources.
 
-## 👨‍💻 Author
-Youssef (Lead Flutter Engineer)

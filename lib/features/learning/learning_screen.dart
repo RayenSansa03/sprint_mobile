@@ -1,72 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import 'learning_models.dart';
 import 'widgets/blackboard_thumbnail.dart';
 import 'course_detail_screen.dart';
 
-class LearningScreen extends StatefulWidget {
+class LearningScreen extends ConsumerStatefulWidget {
   const LearningScreen({super.key});
 
   @override
-  State<LearningScreen> createState() => _LearningScreenState();
+  ConsumerState<LearningScreen> createState() => _LearningScreenState();
 }
 
-class _LearningScreenState extends State<LearningScreen> {
+class _LearningScreenState extends ConsumerState<LearningScreen> {
   String selectedCategory = 'All Courses';
   final List<String> categories = ['All Courses', 'Irrigation', 'Pest Control', 'Fertilization'];
 
-  final List<Course> courses = const [
-    Course(
-      id: '1',
-      title: 'Masterclass Irrigation',
-      description: 'Apprenez à installer et entretenir des systèmes d\'irrigation goutte-à-goutte efficaces.',
-      category: 'Irrigation',
-      thumbnailUrl: 'blackboard_1',
-      duration: '15 mins',
-      type: 'Vidéo',
-      progress: 0.75,
-      parts: [
-        CoursePart(id: '1a', title: 'Introduction à l\'irrigation', content: 'Base de l\'irrigation moderne', isCompleted: true),
-        CoursePart(id: '1b', title: 'Matériel nécessaire', content: 'Tuyaux, raccords et pompes', isCompleted: true),
-        CoursePart(id: '1c', title: 'Installation étape par étape', content: 'Mise en place sur le terrain', isCompleted: true),
-        CoursePart(id: '1d', title: 'Maintenance', content: 'Nettoyage des filtres', isCompleted: false),
-      ],
-    ),
-    Course(
-      id: '2',
-      title: 'Lutte Antiparasitaire',
-      description: 'Méthodes durables pour protéger vos cultures saisonnières.',
-      category: 'Pest Control',
-      thumbnailUrl: 'blackboard_2',
-      duration: '24 mins',
-      type: 'Vidéo',
-      progress: 0.0,
-      parts: [
-        CoursePart(id: '2a', title: 'Identifier les nuisibles', content: 'Insectes et maladies communes', isCompleted: false),
-        CoursePart(id: '2b', title: 'Solutions naturelles', content: 'Pesticides bio', isCompleted: false),
-      ],
-    ),
-    Course(
-      id: '3',
-      title: 'Nutrition du Sol',
-      description: 'Plongée profonde dans la santé des sols et la fertilisation.',
-      category: 'Fertilization',
-      thumbnailUrl: 'blackboard_4',
-      duration: '40 mins',
-      type: 'Vidéo',
-      progress: 1.0,
-      isCompleted: true,
-      parts: [
-        CoursePart(id: '4a', title: 'Analyse de terre', content: 'Comment tester son sol', isCompleted: true),
-        CoursePart(id: '4b', title: 'Engrais NPK', content: 'Comprendre les ratios', isCompleted: true),
-      ],
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final featuredCourse = courses[0];
+    final coursesAsync = ref.watch(coursesProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -74,35 +27,60 @@ class _LearningScreenState extends State<LearningScreen> {
         title: const Text('Apprendre & Grandir'),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(backgroundColor: Colors.orange.shade100, child: const Icon(Icons.menu_book, color: Colors.orange, size: 16)),
+          child: CircleAvatar(
+              backgroundColor: Colors.orange.shade100,
+              child: const Icon(Icons.menu_book, color: Colors.orange, size: 16)),
         ),
         actions: [
           IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {}),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCategoryChips(),
-            const SizedBox(height: 24),
-            const Row(
+      body: coursesAsync.when(
+        data: (allCourses) {
+          final courses = selectedCategory == 'All Courses'
+              ? allCourses
+              : allCourses.where((c) => c.category == selectedCategory).toList();
+
+          if (courses.isEmpty) {
+            return Column(
               children: [
-                Icon(Icons.trending_up, color: Colors.green, size: 20),
-                SizedBox(width: 8),
-                Text('Continuer l\'apprentissage', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                _buildCategoryChips(),
+                const Expanded(child: Center(child: Text('Aucun cours trouvé'))),
+              ],
+            );
+          }
+
+          final featuredCourse = courses.first;
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildCategoryChips(),
+                const SizedBox(height: 24),
+                const Row(
+                  children: [
+                    Icon(Icons.trending_up, color: Colors.green, size: 20),
+                    SizedBox(width: 8),
+                    Text('Continuer l\'apprentissage',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                _buildFeaturedCard(featuredCourse),
+                const SizedBox(height: 32),
+                const Text('Recommandé pour vous',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                const SizedBox(height: 16),
+                ...courses.skip(1).map((course) => _buildCourseCard(course)),
               ],
             ),
-            const SizedBox(height: 16),
-            _buildFeaturedCard(featuredCourse),
-            const SizedBox(height: 32),
-            const Text('Recommandé pour vous', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            const SizedBox(height: 16),
-            ...courses.skip(1).map((course) => _buildCourseCard(course)),
-          ],
-        ),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text('Erreur: $e')),
       ),
     );
   }

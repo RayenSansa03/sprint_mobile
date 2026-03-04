@@ -6,14 +6,23 @@ part 'user_model.g.dart';
 @freezed
 class User with _$User {
   const factory User({
-    required String id,
-    required String name,
     required String email,
+    required String firstName,
+    required String lastName,
+    required String token,
+    required String role,
+    String? id,
+    String? name,
+    String? profilePictureUrl,
     String? phone,
     String? location,
     String? cropType,
-    String? token,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+extension UserX on User {
+  String get fullName => '$firstName $lastName';
+  String get displayName => name ?? fullName;
 }

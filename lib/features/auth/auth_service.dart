@@ -1,45 +1,54 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/network/api_client.dart';
 import '../../core/storage/storage_service.dart';
 import 'user_model.dart';
 import 'dart:convert';
 
 class AuthService {
   final StorageService _storage;
+  final ApiClient _api;
 
-  AuthService(this._storage);
+  AuthService(this._storage, this._api);
 
   static const String _userKey = 'auth_user';
 
   Future<User?> login(String email, String password) async {
-    // Simulate API delay
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      final response = await _api.post('/auth/login', data: {
+        'email': email,
+        'password': password,
+      });
 
-    if (email == 'farmer@smart.com' && password == 'password') {
-      final user = User(
-        id: '1',
-        name: 'Marcus Farmer',
-        email: email,
-        token: 'mock_token_123',
-        phone: '+216 12 345 678',
-        location: 'Bizerte, Tunisia',
-        cropType: 'Cereals & Vegetables',
-      );
-      await saveUser(user);
-      return user;
+      if (response.statusCode == 200) {
+        final user = User.fromJson(response.data);
+        await saveUser(user);
+        return user;
+      }
+    } catch (e) {
+      print('Login error: $e');
     }
     return null;
   }
 
-  Future<User?> register(String name, String email, String password) async {
-    await Future.delayed(const Duration(seconds: 1));
-    final user = User(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: name,
-      email: email,
-      token: 'mock_token_new',
-    );
-    await saveUser(user);
-    return user;
+  Future<User?> register(String firstName, String lastName, String email, String password) async {
+    try {
+      final response = await _api.post('/auth/register', data: {
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'password': password,
+        'role': 'PRODUCTEUR',
+      });
+
+      if (response.statusCode == 200) {
+        final user = User.fromJson(response.data);
+        await saveUser(user);
+        return user;
+      }
+    } catch (e) {
+      print('Registration error: $e');
+    }
+    return null;
   }
 
   Future<void> saveUser(User user) async {
@@ -61,7 +70,8 @@ class AuthService {
 
 final authServiceProvider = Provider<AuthService>((ref) {
   final storage = ref.watch(storageServiceProvider);
-  return AuthService(storage);
+  final api = ref.watch(apiClientProvider);
+  return AuthService(storage, api);
 });
 
 final authStateProvider = StateProvider<User?>((ref) {

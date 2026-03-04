@@ -19,15 +19,9 @@ class BlackboardThumbnail extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFF1B262C), // Dark blackboard color
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        image: DecorationImage(
-          image: const NetworkImage('https://www.transparenttextures.com/patterns/blackboard.png'),
-          repeat: ImageRepeat.repeat,
-          opacity: 0.2,
-          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-        ),
+      decoration: const BoxDecoration(
+        color: Color(0xFF1B262C), // Dark blackboard color
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Stack(
         children: [

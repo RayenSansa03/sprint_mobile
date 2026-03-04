@@ -29,6 +29,8 @@ mixin _$Product {
   String get sellerId => throw _privateConstructorUsedError;
   String get sellerName => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get sellerPhone => throw _privateConstructorUsedError;
   bool get isAvailable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,6 +53,8 @@ abstract class $ProductCopyWith<$Res> {
       String sellerId,
       String sellerName,
       String location,
+      String description,
+      String sellerPhone,
       bool isAvailable});
 }
 
@@ -76,6 +80,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? sellerId = null,
     Object? sellerName = null,
     Object? location = null,
+    Object? description = null,
+    Object? sellerPhone = null,
     Object? isAvailable = null,
   }) {
     return _then(_value.copyWith(
@@ -115,6 +121,14 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      sellerPhone: null == sellerPhone
+          ? _value.sellerPhone
+          : sellerPhone // ignore: cast_nullable_to_non_nullable
+              as String,
       isAvailable: null == isAvailable
           ? _value.isAvailable
           : isAvailable // ignore: cast_nullable_to_non_nullable
@@ -140,6 +154,8 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String sellerId,
       String sellerName,
       String location,
+      String description,
+      String sellerPhone,
       bool isAvailable});
 }
 
@@ -163,6 +179,8 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? sellerId = null,
     Object? sellerName = null,
     Object? location = null,
+    Object? description = null,
+    Object? sellerPhone = null,
     Object? isAvailable = null,
   }) {
     return _then(_$ProductImpl(
@@ -202,6 +220,14 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      sellerPhone: null == sellerPhone
+          ? _value.sellerPhone
+          : sellerPhone // ignore: cast_nullable_to_non_nullable
+              as String,
       isAvailable: null == isAvailable
           ? _value.isAvailable
           : isAvailable // ignore: cast_nullable_to_non_nullable
@@ -223,6 +249,8 @@ class _$ProductImpl implements _Product {
       required this.sellerId,
       required this.sellerName,
       required this.location,
+      required this.description,
+      required this.sellerPhone,
       this.isAvailable = true});
 
   factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
@@ -247,12 +275,16 @@ class _$ProductImpl implements _Product {
   @override
   final String location;
   @override
+  final String description;
+  @override
+  final String sellerPhone;
+  @override
   @JsonKey()
   final bool isAvailable;
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, unit: $unit, category: $category, imageUrl: $imageUrl, sellerId: $sellerId, sellerName: $sellerName, location: $location, isAvailable: $isAvailable)';
+    return 'Product(id: $id, name: $name, price: $price, unit: $unit, category: $category, imageUrl: $imageUrl, sellerId: $sellerId, sellerName: $sellerName, location: $location, description: $description, sellerPhone: $sellerPhone, isAvailable: $isAvailable)';
   }
 
   @override
@@ -274,14 +306,30 @@ class _$ProductImpl implements _Product {
                 other.sellerName == sellerName) &&
             (identical(other.location, location) ||
                 other.location == location) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.sellerPhone, sellerPhone) ||
+                other.sellerPhone == sellerPhone) &&
             (identical(other.isAvailable, isAvailable) ||
                 other.isAvailable == isAvailable));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, price, unit, category,
-      imageUrl, sellerId, sellerName, location, isAvailable);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      price,
+      unit,
+      category,
+      imageUrl,
+      sellerId,
+      sellerName,
+      location,
+      description,
+      sellerPhone,
+      isAvailable);
 
   @JsonKey(ignore: true)
   @override
@@ -308,6 +356,8 @@ abstract class _Product implements Product {
       required final String sellerId,
       required final String sellerName,
       required final String location,
+      required final String description,
+      required final String sellerPhone,
       final bool isAvailable}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
@@ -330,6 +380,10 @@ abstract class _Product implements Product {
   String get sellerName;
   @override
   String get location;
+  @override
+  String get description;
+  @override
+  String get sellerPhone;
   @override
   bool get isAvailable;
   @override

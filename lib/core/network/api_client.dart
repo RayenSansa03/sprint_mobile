@@ -1,19 +1,32 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../storage/storage_service.dart';
+import 'dart:convert';
 
 class ApiClient {
   final Dio _dio;
+  final StorageService _storage;
 
-  ApiClient(this._dio) {
-    _dio.options.baseUrl = 'https://api.agrismart.mock/v1'; // Mock API Base URL
+  ApiClient(this._dio, this._storage) {
+    _dio.options.baseUrl = 'http://localhost:8080/api'; // Local Backend API Base URL
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.options.receiveTimeout = const Duration(seconds: 15);
 
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          // Add auth token if available
-          // options.headers['Authorization'] = 'Bearer $token';
+          final userData = _storage.getString('auth_user');
+          if (userData != null) {
+            try {
+              final user = jsonDecode(userData);
+              final token = user['token'];
+              if (token != null) {
+                options.headers['Authorization'] = 'Bearer $token';
+              }
+            } catch (e) {
+              print('Auth token extraction error: $e');
+            }
+          }
           return handler.next(options);
         },
         onError: (DioException e, handler) {
@@ -45,5 +58,6 @@ final dioProvider = Provider<Dio>((ref) => Dio());
 
 final apiClientProvider = Provider<ApiClient>((ref) {
   final dio = ref.watch(dioProvider);
-  return ApiClient(dio);
+  final storage = ref.watch(storageServiceProvider);
+  return ApiClient(dio, storage);
 });

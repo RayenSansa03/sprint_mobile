@@ -17,6 +17,8 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       sellerId: json['sellerId'] as String,
       sellerName: json['sellerName'] as String,
       location: json['location'] as String,
+      description: json['description'] as String,
+      sellerPhone: json['sellerPhone'] as String,
       isAvailable: json['isAvailable'] as bool? ?? true,
     );
 
@@ -31,5 +33,7 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'sellerId': instance.sellerId,
       'sellerName': instance.sellerName,
       'location': instance.location,
+      'description': instance.description,
+      'sellerPhone': instance.sellerPhone,
       'isAvailable': instance.isAvailable,
     };

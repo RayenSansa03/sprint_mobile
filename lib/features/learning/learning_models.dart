@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/network/api_client.dart';
 
 part 'learning_models.freezed.dart';
 part 'learning_models.g.dart';
@@ -34,69 +36,49 @@ class Course with _$Course {
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
 }
 
+
+
 class LearningService {
+  final ApiClient _api;
+
+  LearningService(this._api);
+
   Future<List<Course>> getCourses() async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    return [
-      const Course(
-        id: '1',
-        title: 'Masterclass Irrigation',
-        description: 'Apprenez à installer et entretenir des systèmes d\'irrigation goutte-à-goutte efficaces.',
-        category: 'Irrigation',
-        thumbnailUrl: 'blackboard_1',
-        duration: '15 mins',
-        type: 'Vidéo',
-        progress: 0.75,
-        parts: [
-          CoursePart(id: '1a', title: 'Introduction à l\'irrigation', content: 'Base de l\'irrigation moderne', isCompleted: true),
-          CoursePart(id: '1b', title: 'Matériel nécessaire', content: 'Tuyaux, raccords et pompes', isCompleted: true),
-          CoursePart(id: '1c', title: 'Installation étape par étape', content: 'Mise en place sur le terrain', isCompleted: true),
-          CoursePart(id: '1d', title: 'Maintenance', content: 'Nettoyage des filtres', isCompleted: false),
-        ],
-      ),
-      const Course(
-        id: '2',
-        title: 'Lutte Antiparasitaire',
-        description: 'Méthodes durables pour protéger vos cultures saisonnières.',
-        category: 'Pest Control',
-        thumbnailUrl: 'blackboard_2',
-        duration: '24 mins',
-        type: 'Vidéo',
-        progress: 0.0,
-        parts: [
-          CoursePart(id: '2a', title: 'Identifier les nuisibles', content: 'Insectes et maladies communes', isCompleted: false),
-          CoursePart(id: '2b', title: 'Solutions naturelles', content: 'Pesticides bio', isCompleted: false),
-        ],
-      ),
-      const Course(
-        id: '3',
-        title: 'Prêts Agricoles 2024',
-        description: 'Guide complet sur les financements gouvernementaux.',
-        category: 'Finance',
-        thumbnailUrl: 'blackboard_3',
-        duration: '12 pages',
-        type: 'PDF',
-        progress: 0.0,
-        parts: [
-          CoursePart(id: '3a', title: 'Critères d\'éligibilité', content: 'Qui peut postuler ?', isCompleted: false),
-          CoursePart(id: '3b', title: 'Documents requis', content: 'Liste des pièces à fournir', isCompleted: false),
-        ],
-      ),
-      const Course(
-        id: '4',
-        title: 'Nutrition du Sol',
-        description: 'Plongée profonde dans la santé des sols et la fertilisation.',
-        category: 'Fertilization',
-        thumbnailUrl: 'blackboard_4',
-        duration: '40 mins',
-        type: 'Vidéo',
-        progress: 1.0,
-        isCompleted: true,
-        parts: [
-          CoursePart(id: '4a', title: 'Analyse de terre', content: 'Comment tester son sol', isCompleted: true),
-          CoursePart(id: '4b', title: 'Engrais NPK', content: 'Comprendre les ratios', isCompleted: true),
-        ],
-      ),
-    ];
+    try {
+      final response = await _api.get('/courses');
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => Course(
+          id: json['id'] ?? '',
+          title: json['title'] ?? '',
+          description: json['description'] ?? '',
+          category: json['tag'] ?? 'Général',
+          thumbnailUrl: (json['image'] as String?)?.isNotEmpty == true ? json['image'] : 'blackboard_1',
+          duration: '20 mins',
+          type: 'Vidéo',
+          progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
+          isCompleted: (json['progress'] ?? 0) >= 100,
+          parts: (json['chapters'] as List<dynamic>?)?.map((c) => CoursePart(
+            id: c['id'] ?? '',
+            title: c['title'] ?? '',
+            content: c['content'] ?? '',
+            isCompleted: false,
+          )).toList() ?? [],
+        )).toList();
+      }
+    } catch (e) {
+      print('Learning fetch error: $e');
+    }
+    return [];
   }
 }
+
+final learningServiceProvider = Provider<LearningService>((ref) {
+  final api = ref.watch(apiClientProvider);
+  return LearningService(api);
+});
+
+final coursesProvider = FutureProvider<List<Course>>((ref) async {
+  final service = ref.watch(learningServiceProvider);
+  return service.getCourses();
+});
