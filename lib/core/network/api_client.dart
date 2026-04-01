@@ -1,25 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-<<<<<<< HEAD
 import '../storage/storage_service.dart';
 import 'dart:convert';
-=======
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
 
 class ApiClient {
   final Dio _dio;
   final StorageService _storage;
 
-<<<<<<< HEAD
   ApiClient(this._dio, this._storage) {
-    _dio.options.baseUrl = 'http://localhost:8080/api'; // Local Backend API Base URL
-=======
-  ApiClient(this._dio) {
     _dio.options.baseUrl = const String.fromEnvironment(
       'API_BASE_URL',
       defaultValue: 'http://localhost:8080/api',
     );
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.options.receiveTimeout = const Duration(seconds: 15);
     _dio.options.headers['Content-Type'] = 'application/json';
