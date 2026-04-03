@@ -1,8 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-<<<<<<< HEAD
-=======
 import 'package:dio/dio.dart';
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
 import '../../core/network/api_client.dart';
 import '../../core/storage/storage_service.dart';
 import 'user_model.dart';
@@ -10,37 +7,17 @@ import 'dart:convert';
 
 class AuthService {
   final StorageService _storage;
-<<<<<<< HEAD
-  final ApiClient _api;
-
-  AuthService(this._storage, this._api);
-=======
   final ApiClient _apiClient;
 
   AuthService(this._storage, this._apiClient) {
     final currentUser = getCurrentUser();
     _apiClient.setAuthToken(currentUser?.token);
   }
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
 
   static const String _userKey = 'auth_user';
 
   Future<User?> login(String email, String password) async {
     try {
-<<<<<<< HEAD
-      final response = await _api.post('/auth/login', data: {
-        'email': email,
-        'password': password,
-      });
-
-      if (response.statusCode == 200) {
-        final user = User.fromJson(response.data);
-        await saveUser(user);
-        return user;
-      }
-    } catch (e) {
-      print('Login error: $e');
-=======
       final response = await _apiClient.post(
         '/auth/login',
         data: {
@@ -49,80 +26,80 @@ class AuthService {
         },
       );
 
-      final user = _mapAuthResponseToUser(response.data);
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        return null;
+      }
+
+      final user = _mapAuthResponseToUser(response.data, fallbackEmail: email);
       await saveUser(user);
       _apiClient.setAuthToken(user.token);
       return user;
     } on DioException {
       return null;
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
+    } catch (_) {
+      return null;
     }
   }
 
-<<<<<<< HEAD
   Future<User?> register(String firstName, String lastName, String email, String password) async {
-    try {
-      final response = await _api.post('/auth/register', data: {
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'password': password,
-        'role': 'PRODUCTEUR',
-      });
-
-      if (response.statusCode == 200) {
-        final user = User.fromJson(response.data);
-        await saveUser(user);
-        return user;
-      }
-    } catch (e) {
-      print('Registration error: $e');
-    }
-    return null;
-=======
-  Future<User?> register(
-    String name,
-    String email,
-    String password, {
-    String lastName = '',
-    String role = 'FARMER',
-    String organization = '',
-  }) async {
     try {
       final response = await _apiClient.post(
         '/auth/register',
         data: {
           'email': email.trim(),
           'password': password,
-          'firstName': name.trim(),
+          'firstName': firstName.trim(),
           'lastName': lastName.trim(),
-          'role': role,
-          'organization': organization,
+          'role': 'PRODUCTEUR',
         },
       );
 
-      final user = _mapAuthResponseToUser(response.data);
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        return null;
+      }
+
+      final user = _mapAuthResponseToUser(
+        response.data,
+        fallbackEmail: email,
+        fallbackFirstName: firstName,
+        fallbackLastName: lastName,
+        fallbackRole: 'PRODUCTEUR',
+      );
       await saveUser(user);
       _apiClient.setAuthToken(user.token);
       return user;
     } on DioException {
       return null;
+    } catch (_) {
+      return null;
     }
   }
 
-  User _mapAuthResponseToUser(dynamic data) {
-    final json = Map<String, dynamic>.from(data as Map);
-    final email = (json['email'] ?? '').toString();
-    final firstName = (json['firstName'] ?? '').toString().trim();
-    final lastName = (json['lastName'] ?? '').toString().trim();
+  User _mapAuthResponseToUser(
+    dynamic data, {
+    String fallbackEmail = '',
+    String fallbackFirstName = '',
+    String fallbackLastName = '',
+    String fallbackRole = 'PRODUCTEUR',
+  }) {
+    final json = data is Map<String, dynamic>
+        ? data
+        : Map<String, dynamic>.from(data as Map);
+
+    final email = (json['email'] ?? fallbackEmail).toString().trim();
+    final firstName = (json['firstName'] ?? fallbackFirstName).toString().trim();
+    final lastName = (json['lastName'] ?? fallbackLastName).toString().trim();
+    final role = (json['role'] ?? fallbackRole).toString().trim();
 
     return User(
-      id: email,
-      name: [firstName, lastName].where((part) => part.isNotEmpty).join(' ').trim(),
       email: email,
+      firstName: firstName,
+      lastName: lastName,
       token: (json['token'] ?? '').toString(),
+      role: role.isEmpty ? fallbackRole : role,
+      id: (json['id'] ?? '').toString().isEmpty ? null : (json['id'] ?? '').toString(),
+      name: [firstName, lastName].where((part) => part.isNotEmpty).join(' ').trim(),
     );
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
   }
 
   Future<void> saveUser(User user) async {
@@ -145,13 +122,8 @@ class AuthService {
 
 final authServiceProvider = Provider<AuthService>((ref) {
   final storage = ref.watch(storageServiceProvider);
-<<<<<<< HEAD
-  final api = ref.watch(apiClientProvider);
-  return AuthService(storage, api);
-=======
   final apiClient = ref.watch(apiClientProvider);
   return AuthService(storage, apiClient);
->>>>>>> 3440655736442a9ccf03ebd19da75d4cd08be463
 });
 
 final authStateProvider = StateProvider<User?>((ref) {
