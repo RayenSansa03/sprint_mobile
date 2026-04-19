@@ -1,0 +1,13 @@
+# Ce fichier est conservé pour référence uniquement.
+# Utiliser le requirements.txt à la RACINE du dossier chatbot-flask/ :
+#
+#   pip install -r ../requirements.txt
+#
+# Le fichier racine contient toutes les dépendances à jour
+# (langgraph, langchain-groq, pymongo, flask-cors, etc.)
+
+# ── Variables d'environnement ────────────────────────────────
+python-dotenv>=1.0.0
+
+# ── Appels HTTP vers le serveur MCP ─────────────────────────
+requests>=2.31.0

@@ -1,0 +1,67 @@
+server:
+  port: ${GATEWAY_PORT:8085}
+
+jwt:
+  secret: ${JWT_SECRET:test-secret-key-minimum-32-characters-required-for-jwt!!}
+  algorithm: ${JWT_ALGORITHM:HS256}
+
+spring:
+  application:
+    name: agrismart-api-gateway
+  autoconfigure:
+    exclude: org.springframework.cloud.autoconfigure.LifecycleMvcEndpointAutoConfiguration
+  codec:
+    max-in-memory-size: 100MB # Increase for large image uploads
+  cloud:
+    refresh:
+      enabled: false
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+            exposedHeaders:
+              - "Authorization"
+              - "Content-Type"
+              - "Access-Control-Allow-Origin"
+      routes:
+        - id: plant-ai-api
+          uri: ${PLANT_AI_URL:http://localhost:8001}
+          predicates:
+            - Path=/api/plant-ai/**
+          filters:
+            - RewritePath=/api/plant-ai/?(?<segment>.*), /${segment}
+        - id: chatbot-chat
+          uri: ${CHATBOT_API_URL:http://localhost:5002}
+          predicates:
+            - Path=/api/ai/chat
+          filters:
+            - RewritePath=/api/ai/chat, /chat
+        - id: spring-api
+          uri: ${SPRING_API_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/**
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.cors: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

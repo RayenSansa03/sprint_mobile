@@ -1,0 +1,499 @@
+{
+	"info": {
+		"_postman_id": "agrismart-collection",
+		"name": "AgriSmart API Tests",
+		"description": "Collection complète pour tester manuellement l'application AgriSmart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@agrismart.gn\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/login",
+							"host": ["{{gateway_url}}", "/api/auth/login"]
+						}
+					}
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"visiteur@agrismart.gn\",\n  \"password\": \"Test@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/login",
+							"host": ["{{gateway_url}}", "/api/auth/login"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/refresh",
+							"host": ["{{gateway_url}}", "/api/auth/refresh"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/logout",
+							"host": ["{{gateway_url}}", "/api/auth/logout"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Health & Status",
+			"item": [
+				{
+					"name": "Backend Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend_url}}/actuator/health",
+							"host": ["{{backend_url}}", "/actuator/health"]
+						}
+					}
+				},
+				{
+					"name": "Backend Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend_url}}/actuator/info",
+							"host": ["{{backend_url}}", "/actuator/info"]
+						}
+					}
+				},
+				{
+					"name": "Chatbot Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{chatbot_url}}/health",
+							"host": ["{{chatbot_url}}", "/health"]
+						}
+					}
+				},
+				{
+					"name": "Gateway Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/health",
+							"host": ["{{gateway_url}}", "/api/auth/health"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/users/profile",
+							"host": ["{{gateway_url}}", "/api/users/profile"]
+						}
+					}
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/users",
+							"host": ["{{gateway_url}}", "/api/users"]
+						}
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/users/:id",
+							"host": ["{{gateway_url}}", "/api/users/:id"]
+						}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Admin Updated\",\n  \"phone\": \"+224 622 123 456\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/users/:id",
+							"host": ["{{gateway_url}}", "/api/users/:id"]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/users/:id",
+							"host": ["{{gateway_url}}", "/api/users/:id"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Tasks (Example Resource)",
+			"item": [
+				{
+					"name": "List All Tasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/tasks",
+							"host": ["{{gateway_url}}", "/api/tasks"]
+						}
+					}
+				},
+				{
+					"name": "Get Task by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/tasks/:id",
+							"host": ["{{gateway_url}}", "/api/tasks/:id"]
+						}
+					}
+				},
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Inspection des cultures\",\n  \"description\": \"Vérifier l'état des plants de tomate\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2026-03-30T17:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/tasks",
+							"host": ["{{gateway_url}}", "/api/tasks"]
+						}
+					}
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Inspection des cultures - COMPLETED\",\n  \"status\": \"COMPLETED\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/tasks/:id",
+							"host": ["{{gateway_url}}", "/api/tasks/:id"]
+						}
+					}
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/tasks/:id",
+							"host": ["{{gateway_url}}", "/api/tasks/:id"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Chatbot",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"message\": \"Quand dois-je arroser mes tomates?\",\n  \"language\": \"fr\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/chatbot/api/message",
+							"host": ["{{gateway_url}}", "/chatbot/api/message"]
+						}
+					}
+				},
+				{
+					"name": "Generate TTS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Bonjour agriculteur!\",\n  \"language\": \"fr\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/chatbot/api/tts",
+							"host": ["{{gateway_url}}", "/chatbot/api/tts"]
+						}
+					}
+				},
+				{
+					"name": "Admin - Clear Memory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Admin-Token",
+								"value": "{{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{chatbot_url}}/admin/clear-memory",
+							"host": ["{{chatbot_url}}", "/admin/clear-memory"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Error Scenarios",
+			"item": [
+				{
+					"name": "No Token - Should 401",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/users/profile",
+							"host": ["{{gateway_url}}", "/api/users/profile"]
+						}
+					}
+				},
+				{
+					"name": "Invalid Token - Should 401",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer invalid-token-12345"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/users/profile",
+							"host": ["{{gateway_url}}", "/api/users/profile"]
+						}
+					}
+				},
+				{
+					"name": "Invalid Email - Should 400",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"invalid-email\",\n  \"password\": \"Test@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/login",
+							"host": ["{{gateway_url}}", "/api/auth/login"]
+						}
+					}
+				},
+				{
+					"name": "Nonexistent ID - Should 404",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/api/tasks/nonexistent-id-999",
+							"host": ["{{gateway_url}}", "/api/tasks/nonexistent-id-999"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "backend_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "chatbot_url",
+			"value": "http://localhost:5005",
+			"type": "string"
+		},
+		{
+			"key": "frontend_url",
+			"value": "http://localhost:4200",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "admin-token-test-123456",
+			"type": "string"
+		}
+	]
+}

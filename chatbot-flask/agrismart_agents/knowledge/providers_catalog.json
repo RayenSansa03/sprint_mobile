@@ -1,0 +1,212 @@
+{
+  "visiteur": {
+    "public_market": {
+      "intent": "explorer_marketplace",
+      "keywords": ["marketplace", "marche", "catalogue", "market place", "market", "acheter", "produits", "offres"],
+      "synonyms": ["ou acheter", "parcourir les offres", "voir les produits"],
+      "reply_fr": "Le Marketplace AgriSmart est accessible sans connexion. Vous pouvez parcourir les offres de produits agricoles et filtrer par categorie ou region. Rendez-vous sur /marketplace.",
+      "suggested_pages": ["/marketplace"]
+    },
+    "signup": {
+      "intent": "inscription",
+      "keywords": ["inscription", "creer compte", "signup", "s'inscrire", "nouveau compte", "rejoindre"],
+      "synonyms": ["comment s'enregistrer", "creer un profil"],
+      "reply_fr": "Pour creer votre compte AgriSmart, cliquez sur 'S'inscrire' en haut a droite. Choisissez votre role (agriculteur, technicien, cooperative...) et completez le formulaire.",
+      "suggested_pages": ["/signup", "/login"]
+    },
+    "login": {
+      "intent": "connexion",
+      "keywords": ["connexion", "login", "authentification", "se connecter", "mot de passe"],
+      "synonyms": ["acceder a mon compte", "ouvrir une session"],
+      "reply_fr": "Pour vous connecter, allez sur /login et saisissez votre email et mot de passe.",
+      "suggested_pages": ["/login"]
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "intent": "tableau_de_bord",
+      "keywords": ["dashboard", "kpi", "tableau de bord", "accueil", "vue globale", "indicateurs"],
+      "synonyms": ["page d'accueil admin", "vue d'ensemble"],
+      "reply_fr": "Votre tableau de bord administrateur se trouve sur /app/dashboard. Il affiche les KPIs systeme, le nombre d'utilisateurs actifs, les alertes en cours et les anomalies detectees.",
+      "suggested_pages": ["/app/dashboard"]
+    },
+    "users_management": {
+      "intent": "gestion_utilisateurs",
+      "keywords": ["utilisateur", "roles", "permissions", "compte", "gestion utilisateurs", "membres"],
+      "synonyms": ["gerer les comptes", "attribuer un role", "valider inscription"],
+      "reply_fr": "La gestion des utilisateurs est disponible sur /app/users-management. Vous pouvez y creer, modifier, suspendre des comptes et attribuer des roles.",
+      "suggested_pages": ["/app/users-management"]
+    },
+    "agro_market": {
+      "intent": "marketplace_supervision",
+      "keywords": ["marche", "prix", "market", "marketplace", "moderation", "produits"],
+      "synonyms": ["superviser le marche", "moderer les offres"],
+      "reply_fr": "Le module Marketplace admin est sur /app/market. Superviser les produits, moderer les offres et suivre les transactions.",
+      "suggested_pages": ["/app/market"]
+    },
+    "planning": {
+      "intent": "planning_global",
+      "keywords": ["planning", "calendrier", "taches", "planification", "agenda"],
+      "synonyms": ["voir le planning global", "SLA"],
+      "reply_fr": "Le planning global est accessible sur /app/planning. Piloter les taches systeme, les SLA et les plannings de tous les utilisateurs.",
+      "suggested_pages": ["/app/planning"]
+    },
+    "e_learning": {
+      "intent": "formation",
+      "keywords": ["formation", "cours", "e-learning", "apprentissage", "module", "il y a des cours"],
+      "synonyms": ["contenus pedagogiques", "parcours de formation"],
+      "reply_fr": "La plateforme e-learning est disponible sur /app/e-learning. En tant qu'admin, vous pouvez creer et gerer des parcours de formation.",
+      "suggested_pages": ["/app/e-learning"]
+    },
+    "logs_audit": {
+      "intent": "audit_logs",
+      "keywords": ["logs", "audit", "trace", "journal", "historique", "conformite"],
+      "synonyms": ["tracabilite", "audit trail"],
+      "reply_fr": "Les logs d'audit sont sur /app/logs. L'historique complet des actions systeme, les connexions et les modifications de donnees.",
+      "suggested_pages": ["/app/logs"]
+    },
+    "ai_models": {
+      "intent": "modeles_ia",
+      "keywords": ["ia", "modeles", "ml", "intelligence artificielle", "modele"],
+      "synonyms": ["gestion modeles IA", "versions ML"],
+      "reply_fr": "L'administration des modeles IA est sur /app/modeles-ia. Gerer les versions, declencher les reentrainements et surveiller les performances.",
+      "suggested_pages": ["/app/modeles-ia"]
+    }
+  },
+  "agriculteur": {
+    "dashboard": {
+      "intent": "tableau_de_bord",
+      "keywords": ["dashboard", "suivi exploitation", "accueil", "vue d'ensemble", "recap"],
+      "synonyms": ["page principale", "resume de mon exploitation"],
+      "reply_fr": "Votre tableau de bord personnel est sur /app/dashboard. Il affiche un resume de vos parcelles, l'etat de vos capteurs IoT, vos prochaines taches et les alertes en cours.",
+      "suggested_pages": ["/app/dashboard"]
+    },
+    "my_plots": {
+      "intent": "gestion_parcelles",
+      "keywords": ["parcelle", "plots", "terrain", "champ", "exploitation", "gerer parcelle"],
+      "synonyms": ["mes terres", "creer une parcelle", "voir mes champs"],
+      "reply_fr": "Vos parcelles sont gerees depuis /app/agri. Cliquez sur 'Nouvelle parcelle' pour en creer une, ou selectionnez une parcelle existante pour voir ses details.",
+      "suggested_pages": ["/app/agri"]
+    },
+    "ai_dashboard": {
+      "intent": "recommandations_ia",
+      "keywords": ["dashboard ia", "recommandation", "prediction", "ia", "conseil ia", "diagnostic"],
+      "synonyms": ["conseils intelligents", "predictions cultures"],
+      "reply_fr": "Les recommandations IA pour votre exploitation sont sur /app/dashboard-ia. Predictions de recolte et diagnostics automatiques disponibles.",
+      "suggested_pages": ["/app/dashboard-ia", "/app/diagnostics"]
+    },
+    "e_learning": {
+      "intent": "formation",
+      "keywords": ["formation", "e-learning", "cours", "apprendre", "il y a des cours"],
+      "synonyms": ["modules de formation", "tutoriels agricoles"],
+      "reply_fr": "La section formation est disponible sur /app/e-learning. Cours sur les techniques agricoles, gestion de l'eau, lutte phytosanitaire et plus.",
+      "suggested_pages": ["/app/e-learning"]
+    },
+    "agro_market": {
+      "intent": "marketplace",
+      "keywords": ["prix", "vente", "marche", "marketplace", "market", "market place", "acheter", "vendre", "semences", "engrais"],
+      "synonyms": ["ou acheter des semences", "vendre ma production", "prix du marche"],
+      "reply_fr": "Le Marketplace AgriSmart est sur /app/market. Consulter les prix, mettre en vente votre production et passer des commandes.",
+      "suggested_pages": ["/app/market"]
+    },
+    "planning": {
+      "intent": "planning_agricole",
+      "keywords": ["planning", "taches", "calendrier", "activite", "agenda", "planifier"],
+      "synonyms": ["mon calendrier", "mes taches du jour", "planifier une activite"],
+      "reply_fr": "Votre planning agricole est sur /app/planning. Gerer vos taches, creer des activites planifiees et consulter votre calendrier de culture.",
+      "suggested_pages": ["/app/planning"]
+    },
+    "alerts": {
+      "intent": "alertes_iot",
+      "keywords": ["alertes", "risques", "incident", "capteur", "anomalie", "probleme"],
+      "synonyms": ["voir mes alertes", "anomalies capteurs"],
+      "reply_fr": "Vos alertes sont centralisees sur /app/alerts. Anomalies detectees par vos capteurs IoT et incidents prioritaires.",
+      "suggested_pages": ["/app/alerts"]
+    }
+  },
+  "cooperative": {
+    "dashboard": {
+      "intent": "tableau_de_bord",
+      "keywords": ["dashboard", "cooperative", "vue globale", "membres", "recap"],
+      "synonyms": ["vue d'ensemble cooperative"],
+      "reply_fr": "Le tableau de bord de votre cooperative est sur /app/dashboard. Il centralise l'activite de tous vos membres : parcelles, taches, stocks et alertes.",
+      "suggested_pages": ["/app/dashboard"]
+    },
+    "planning": {
+      "intent": "coordination_planning",
+      "keywords": ["planning", "membres", "coordination", "agenda", "taches"],
+      "synonyms": ["coordonner les membres", "planning collectif"],
+      "reply_fr": "La coordination des activites membres se fait sur /app/planning. Assigner des taches et suivre l'avancement collectif.",
+      "suggested_pages": ["/app/planning"]
+    },
+    "alerts": {
+      "intent": "alertes_suivi",
+      "keywords": ["alertes", "incident", "suivi", "probleme", "urgence"],
+      "synonyms": ["surveiller les incidents", "alertes membres"],
+      "reply_fr": "Le suivi des alertes de votre cooperative est sur /app/alerts. Filtrer par membre ou par parcelle pour prioriser les interventions.",
+      "suggested_pages": ["/app/alerts"]
+    }
+  },
+  "etat": {
+    "dashboard": {
+      "intent": "tableau_de_bord",
+      "keywords": ["dashboard", "kpi", "indicateur", "statistiques", "suivi national"],
+      "synonyms": ["indicateurs publics agricoles"],
+      "reply_fr": "Le tableau de bord des indicateurs publics est sur /app/dashboard. Suivre les KPIs agricoles nationaux, les tendances de production et les statistiques de marche.",
+      "suggested_pages": ["/app/dashboard"]
+    },
+    "agro_market": {
+      "intent": "analyse_marche",
+      "keywords": ["agro-market", "filiere", "marche", "prix", "tendance", "analyse"],
+      "synonyms": ["analyse de la filiere agricole", "tendances marche"],
+      "reply_fr": "L'analyse du marche agricole est sur /app/market. Tendances de prix par filiere, volumes echanges et rapports statistiques.",
+      "suggested_pages": ["/app/market"]
+    }
+  },
+  "technicien": {
+    "dashboard": {
+      "intent": "tableau_de_bord",
+      "keywords": ["dashboard", "operations", "terrain", "interventions"],
+      "synonyms": ["mes interventions du jour"],
+      "reply_fr": "Votre tableau de bord technicien est sur /app/dashboard. Interventions planifiees, diagnostics en attente et parcelles prioritaires.",
+      "suggested_pages": ["/app/dashboard"]
+    },
+    "diagnostics": {
+      "intent": "diagnostic_technique",
+      "keywords": ["diagnostic", "analyse", "symptome", "maladie", "probleme plante"],
+      "synonyms": ["analyser une parcelle", "faire un diagnostic"],
+      "reply_fr": "L'interface de diagnostic est sur /app/diagnostics. Documenter les symptomes, acceder aux recommandations IA et generer des rapports d'intervention.",
+      "suggested_pages": ["/app/diagnostics", "/app/dashboard-ia"]
+    },
+    "alerts": {
+      "intent": "alertes_critiques",
+      "keywords": ["alertes", "incident", "urgence", "priorite", "capteur"],
+      "synonyms": ["triage des incidents", "alertes critiques"],
+      "reply_fr": "Le triage des alertes critiques est sur /app/alerts. Les incidents sont classes par niveau de priorite (critique / avertissement / info).",
+      "suggested_pages": ["/app/alerts"]
+    }
+  },
+  "ong": {
+    "dashboard": {
+      "intent": "tableau_de_bord",
+      "keywords": ["dashboard", "projet", "beneficiaire", "programme"],
+      "synonyms": ["suivi des projets", "vue d'ensemble ONG"],
+      "reply_fr": "Votre tableau de bord ONG est sur /app/dashboard. Avancement des projets, nombre de beneficiaires actifs et indicateurs d'impact.",
+      "suggested_pages": ["/app/dashboard"]
+    },
+    "planning": {
+      "intent": "coordination_campagne",
+      "keywords": ["planning", "campagne", "coordination", "programme"],
+      "synonyms": ["planifier une campagne", "coordination terrain"],
+      "reply_fr": "La coordination des campagnes terrain se fait sur /app/planning. Organiser les activites par zone, assigner des equipes et suivre l'execution.",
+      "suggested_pages": ["/app/planning"]
+    },
+    "e_learning": {
+      "intent": "formation_equipes",
+      "keywords": ["formation", "e-learning", "capacitation", "cours", "equipe"],
+      "synonyms": ["former les equipes terrain", "modules de renforcement"],
+      "reply_fr": "Les parcours de formation pour vos equipes sont sur /app/e-learning. Inscrire vos equipes terrain, suivre leur progression et exporter les attestations.",
+      "suggested_pages": ["/app/e-learning", "/app/training"]
+    }
+  }
+}

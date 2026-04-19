@@ -1,0 +1,152 @@
+[
+  {
+    "id": "q-guidance-1",
+    "query": "Quels sont les besoins en irrigation des tomates en ete ?",
+    "min_score": 0.55
+  },
+  {
+    "id": "q-market-1",
+    "query": "Comment evoluent les prix des cereales cette semaine ?",
+    "min_score": 0.55
+  },
+  {
+    "id": "q-soil-1",
+    "query": "Quels conseils pour ameliorer la fertilite du sol ?",
+    "min_score": 0.55
+  },
+  {
+    "id": "q-pest-1",
+    "query": "Quel protocole appliquer quand un ravageur se propage rapidement ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-weather-1",
+    "query": "Comment reprioriser les taches agricoles en cas de fortes chaleurs ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-weather-2",
+    "query": "Quelles actions effectuer apres de fortes pluies sur la parcelle ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-postharvest-1",
+    "query": "Comment reduire les pertes apres recolte avant la vente ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-coop-1",
+    "query": "Quelle routine hebdomadaire recommander a une cooperative ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-coop-2",
+    "query": "Quels KPI de performance suivre pour une cooperative agricole ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-state-1",
+    "query": "Quels indicateurs nationaux suivre pour piloter l agriculture ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-state-2",
+    "query": "Comment prioriser les interventions publiques par region ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-tech-1",
+    "query": "Quel SLA appliquer selon la gravite d un incident technique terrain ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-tech-2",
+    "query": "Que doit contenir la checklist de cloture d incident ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-ngo-1",
+    "query": "Comment structurer un rapport d impact ONG par zone geographique ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-admin-1",
+    "query": "Quels controles hebdomadaires faire pour les roles et permissions plateforme ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-admin-2",
+    "query": "Comment preparer un runbook en cas de degradation du service ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-guidance-2",
+    "query": "Quels modules de formation recommander a un nouvel agriculteur ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-market-2",
+    "query": "Comment detecter une baisse anormale des prix sur une culture ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-soil-2",
+    "query": "Quelles actions de correction rapide pour un sol appauvri ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-pest-2",
+    "query": "Quels signaux d alerte precoce surveiller pour les maladies des cultures ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-weather-3",
+    "query": "Quel plan d action appliquer avant un episode de vent fort ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-postharvest-2",
+    "query": "Comment organiser le tri et le stockage pour limiter les pertes post recolte ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-coop-3",
+    "query": "Comment une cooperative peut planifier ses priorites mensuelles par zone ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-state-3",
+    "query": "Quels leviers publics activer quand une region est en stress hydrique ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-tech-3",
+    "query": "Comment categoriser les incidents terrain pour prioriser les interventions ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-ngo-2",
+    "query": "Quels indicateurs d impact social suivre pour un programme agricole local ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-admin-3",
+    "query": "Quels controles mensuels appliquer pour la disponibilite et la securite de la plateforme ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-market-3",
+    "query": "Comment comparer les tendances de prix entre deux regions agricoles ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-tech-4",
+    "query": "Que doit contenir un post mortem apres incident critique terrain ?",
+    "min_score": 0.52
+  },
+  {
+    "id": "q-ngo-3",
+    "query": "Comment structurer un suivi trimestriel des resultats ONG par territoire ?",
+    "min_score": 0.52
+  }
+]
