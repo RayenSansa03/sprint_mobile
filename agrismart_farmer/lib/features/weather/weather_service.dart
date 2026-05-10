@@ -59,7 +59,7 @@ class WeatherService extends _$WeatherService {
     final locations = [
       {'name': 'Mornag', 'lat': 36.6775, 'lon': 10.2878},
       {'name': 'Sidi Thabet', 'lat': 36.9103, 'lon': 10.0401},
-      {'name': 'Sfax', 'lat': 34.7400, 'lon': 10.7600},
+      {'name': 'Béja (Champ Maïs)', 'lat': 36.7256, 'lon': 9.1817},
     ];
 
     return Future.wait(

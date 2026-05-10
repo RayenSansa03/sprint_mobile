@@ -7,6 +7,8 @@ class CoursePart {
   final String content;
   final bool isCompleted;
   final String type;
+  final String? youtubeUrl;
+  final String? fileUrl;
 
   CoursePart({
     required this.id,
@@ -14,6 +16,8 @@ class CoursePart {
     required this.content,
     this.isCompleted = false,
     this.type = 'video',
+    this.youtubeUrl,
+    this.fileUrl,
   });
 
   factory CoursePart.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,8 @@ class CoursePart {
       content: json['content'] ?? '',
       isCompleted: json['completed'] ?? false,
       type: json['type'] ?? 'video',
+      youtubeUrl: json['youtubeUrl'],
+      fileUrl: json['fileUrl'],
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../core/theme/app_colors.dart';
 import 'learning_models.dart';
 
@@ -18,11 +20,32 @@ class CourseContentScreen extends StatefulWidget {
 
 class _CourseContentScreenState extends State<CourseContentScreen> {
   late bool _isCompleted;
+  YoutubePlayerController? _youtubeController;
 
   @override
   void initState() {
     super.initState();
-    _isCompleted = widget.course.parts[widget.partIndex].isCompleted;
+    final part = widget.course.parts[widget.partIndex];
+    _isCompleted = part.isCompleted;
+
+    if (part.type == 'youtube' && part.youtubeUrl != null) {
+      final videoId = YoutubePlayer.convertUrlToId(part.youtubeUrl!);
+      if (videoId != null) {
+        _youtubeController = YoutubePlayerController(
+          initialVideoId: videoId,
+          flags: const YoutubePlayerFlags(
+            autoPlay: false,
+            mute: false,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _youtubeController?.dispose();
+    super.dispose();
   }
 
   void _toggleCompletion() {
@@ -81,7 +104,30 @@ class _CourseContentScreenState extends State<CourseContentScreen> {
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 24),
-                  if (part.type == 'video')
+                  if (part.type == 'youtube' && _youtubeController != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: YoutubePlayer(
+                        controller: _youtubeController!,
+                        showVideoProgressIndicator: true,
+                        progressIndicatorColor: AppColors.primary,
+                      ),
+                    )
+                  else if (part.type == 'pdf' && part.fileUrl != null)
+                    Container(
+                      height: 400,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: SfPdfViewer.network(
+                          part.fileUrl!,
+                        ),
+                      ),
+                    )
+                  else if (part.type == 'video')
                     Container(
                       height: 200,
                       width: double.infinity,

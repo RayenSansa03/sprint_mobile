@@ -164,7 +164,7 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
     super.initState();
     // Auto-initiate conversation if it's a first-time view for this result
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(chatbotControllerProvider.notifier).sendQuery(
+      ref.read(scanChatbotControllerProvider.notifier).sendQuery(
         "Expliquez-moi plus sur la maladie : ${widget.result.diseaseName}",
         diagnosticContext: widget.result.diseaseName,
       );
@@ -173,7 +173,7 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
 
   void _sendMessage() {
     if (_chatController.text.trim().isEmpty) return;
-    ref.read(chatbotControllerProvider.notifier).sendQuery(
+    ref.read(scanChatbotControllerProvider.notifier).sendQuery(
       _chatController.text,
       diagnosticContext: widget.result.diseaseName,
     );
@@ -202,8 +202,8 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messages = ref.watch(chatbotControllerProvider);
-    final isLoading = ref.watch(chatbotControllerProvider.notifier).isLoading;
+    final messages = ref.watch(scanChatbotControllerProvider);
+    final isLoading = ref.watch(scanChatbotControllerProvider.notifier).isLoading;
 
     return Scaffold(
       drawer: const ScanHistoryDrawer(),

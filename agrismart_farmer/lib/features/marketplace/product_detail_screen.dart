@@ -1,19 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/theme/app_colors.dart';
 import 'marketplace_models.dart';
+import '../chat/chat_screen.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final Product product;
 
   const ProductDetailScreen({super.key, required this.product});
 
   @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  int _currentImageIndex = 0;
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(launchUri);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Impossible de lancer l\'appel')),
+        );
+      }
+    }
+  }
+
+  void _openChat(BuildContext context) {
+    if (widget.product.sellerId != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatScreen(
+            recipientEmail: widget.product.sellerId!,
+            recipientName: widget.product.sellerName ?? 'Vendeur',
+            product: widget.product,
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erreur: Identifiant du vendeur manquant')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<String> imageUrls = [];
+    if (widget.product.imageUrl != null && widget.product.imageUrl!.isNotEmpty) {
+      if (widget.product.imageUrl!.contains(',')) {
+        imageUrls = widget.product.imageUrl!.split(',').where((url) => url.isNotEmpty).toList();
+      } else {
+        imageUrls = [widget.product.imageUrl!];
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          _buildSliverAppBar(context),
+          _buildSliverAppBar(context, imageUrls),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -22,10 +75,10 @@ class ProductDetailScreen extends StatelessWidget {
                 children: [
                   _buildMainInfo(),
                   const SizedBox(height: 24),
-                  _buildSectionTitle('DESCRIPTION'),
+                  _buildSectionTitle('DESCRIPTION DÉTAILLÉE'),
                   const SizedBox(height: 12),
                   Text(
-                    product.description ?? 'No description available.',
+                    widget.product.description ?? 'Aucune description disponible pour ce produit.',
                     style: const TextStyle(
                       fontSize: 15,
                       color: AppColors.textSecondary,
@@ -45,22 +98,61 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSliverAppBar(BuildContext context) {
+  Widget _buildSliverAppBar(BuildContext context, List<String> imageUrls) {
     return SliverAppBar(
       expandedHeight: 300,
       pinned: true,
       backgroundColor: AppColors.primary,
       flexibleSpace: FlexibleSpaceBar(
-        background: Hero(
-          tag: 'product_image_${product.id}',
-          child: Image.network(
-            product.imageUrl ?? '',
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Container(
-              color: Colors.grey.shade100,
-              child: const Icon(Icons.image_not_supported, color: Colors.grey),
-            ),
-          ),
+        background: Stack(
+          children: [
+            if (imageUrls.isEmpty)
+              Container(
+                color: Colors.grey.shade100,
+                width: double.infinity,
+                child: const Icon(Icons.image_not_supported, color: Colors.grey, size: 64),
+              )
+            else
+              PageView.builder(
+                itemCount: imageUrls.length,
+                onPageChanged: (index) {
+                  setState(() => _currentImageIndex = index);
+                },
+                itemBuilder: (context, index) {
+                  return Image.network(
+                    imageUrls[index],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey.shade100,
+                      child: const Icon(Icons.broken_image, color: Colors.grey, size: 64),
+                    ),
+                  );
+                },
+              ),
+            if (imageUrls.length > 1)
+              Positioned(
+                bottom: 16,
+                left: 0,
+                right: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    imageUrls.length,
+                    (index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      height: 8,
+                      width: _currentImageIndex == index ? 24 : 8,
+                      decoration: BoxDecoration(
+                        color: _currentImageIndex == index ? AppColors.primary : Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
       leading: IconButton(
@@ -97,7 +189,7 @@ class ProductDetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                (product.category ?? 'General').toUpperCase(),
+                (widget.product.category ?? 'Général').toUpperCase(),
                 style: const TextStyle(
                   color: AppColors.primary,
                   fontSize: 10,
@@ -109,21 +201,23 @@ class ProductDetailScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
                 const SizedBox(width: 4),
-                Text(product.location ?? 'N/A', style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+                Text(widget.product.location ?? 'Non spécifié', style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
               ],
             ),
           ],
         ),
         const SizedBox(height: 16),
         Text(
-          product.name,
+          widget.product.name,
           style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
-              '\$${product.price.toStringAsFixed(2)}',
+              '${widget.product.price.toStringAsFixed(0)} GNF',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -131,7 +225,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             Text(
-              ' / ${product.unit}',
+              ' / ${widget.product.unit}',
               style: const TextStyle(fontSize: 16, color: AppColors.textSecondary),
             ),
           ],
@@ -166,7 +260,7 @@ class ProductDetailScreen extends StatelessWidget {
             radius: 25,
             backgroundColor: AppColors.primaryLight,
             child: Text(
-              (product.sellerName ?? 'Unknown')[0],
+              (widget.product.sellerName != null && widget.product.sellerName!.isNotEmpty) ? widget.product.sellerName![0] : 'U',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary),
             ),
           ),
@@ -176,11 +270,11 @@ class ProductDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'SELLER',
+                  'VENDEUR',
                   style: TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  product.sellerName ?? 'Unknown Seller',
+                  widget.product.sellerName ?? 'Vendeur Inconnu',
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -196,7 +290,7 @@ class ProductDetailScreen extends StatelessWidget {
               children: [
                 Icon(Icons.verified, color: AppColors.primary, size: 14),
                 SizedBox(width: 4),
-                Text('Verified', style: TextStyle(color: AppColors.primary, fontSize: 10, fontWeight: FontWeight.bold)),
+                Text('Vérifié', style: TextStyle(color: AppColors.primary, fontSize: 10, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -228,7 +322,7 @@ class ProductDetailScreen extends StatelessWidget {
             children: [
               Icon(Icons.chat_bubble_outline),
               SizedBox(width: 12),
-              Text('CONTACT SELLER', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              Text('CONTACTER LE VENDEUR', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
         ),
@@ -256,7 +350,7 @@ class ProductDetailScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 24),
             ),
             const Text(
-              'Contact Vendor',
+              'Informations Vendeur',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
@@ -271,7 +365,7 @@ class ProductDetailScreen extends StatelessWidget {
                   const Icon(Icons.phone_android, color: AppColors.primary),
                   const SizedBox(width: 16),
                   Text(
-                    product.sellerPhone ?? 'N/A',
+                    widget.product.sellerPhone ?? 'Non Renseigné',
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1),
                   ),
                 ],
@@ -282,9 +376,13 @@ class ProductDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (widget.product.sellerPhone != null) {
+                        _makePhoneCall(widget.product.sellerPhone!);
+                      }
+                    },
                     icon: const Icon(Icons.call),
-                    label: const Text('CALL'),
+                    label: const Text('APPELER'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       side: const BorderSide(color: AppColors.primary),
@@ -296,7 +394,7 @@ class ProductDetailScreen extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () => _openChat(context),
                     icon: const Icon(Icons.message),
                     label: const Text('MESSAGE'),
                     style: ElevatedButton.styleFrom(

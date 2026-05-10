@@ -211,7 +211,7 @@ class _ChatbotScreenState extends ConsumerState<ChatbotScreen> {
                   },
                 ),
               ),
-              if (messages.isEmpty) _buildSuggestions(),
+              if (messages.length <= 1) _buildSuggestions(),
               ChatInputArea(
                 controller: _textController,
                 onSend: _sendMessage,
@@ -269,10 +269,9 @@ class _ChatbotScreenState extends ConsumerState<ChatbotScreen> {
 
   Widget _buildSuggestions() {
     final suggestions = [
-      "Conseils pour mes tomates",
-      "Liste de mes parcelles",
-      "Aide pour le marché",
-      "Météo agricole"
+      "Quels sont les symptômes de la Rouille Commune du Maïs ?",
+      "Combien d'articles y a-t-il dans le marché ?",
+      "Faut-il utiliser des fongicides préventifs ou curatifs pour le maïs ?"
     ];
     return Container(
       height: 40,

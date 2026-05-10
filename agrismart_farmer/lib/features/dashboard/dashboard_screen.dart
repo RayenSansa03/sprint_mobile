@@ -116,7 +116,30 @@ class DashboardScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     _buildFeaturedCard(context, featuredCourse),
                     const SizedBox(height: 32),
-                    _buildSectionTitle('CARTE DE L\'EXPLOITATION'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSectionTitle('CARTE DE L\'EXPLOITATION'),
+                        TextButton.icon(
+                          onPressed: () {
+                            ref.invalidate(dashboardProvider);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Actualisation de la carte...'),
+                                duration: Duration(seconds: 1),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.refresh_rounded, size: 18),
+                          label: const Text('Actualiser', style: TextStyle(fontSize: 12)),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.primary,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 16),
                     const FieldMapWidget(),
                     const SizedBox(height: 40),
@@ -134,35 +157,36 @@ class DashboardScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('RÉSUMÉ EN TEMPS RÉEL'),
+        _buildSectionTitle('ÉTAT DES CHAMPS EN TEMPS RÉEL'),
         const SizedBox(height: 16),
         SizedBox(
-          height: 110,
+          height: 130, // Increased height
           child: ListView(
             scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
             children: [
               _buildStatCard(
                 'Parcelles',
                 '${stats.healthyPlots}/${stats.totalPlots}',
-                'Saines',
+                'Opérationnel',
                 Icons.eco_rounded,
                 AppColors.gradientPrimary,
                 isLoading,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               _buildStatCard(
                 'Alertes',
                 stats.activeAlerts.toString(),
-                'Actives',
+                stats.activeAlerts > 0 ? 'Action requise' : 'Aucune',
                 Icons.warning_amber_rounded,
-                AppColors.gradientGold,
+                stats.activeAlerts > 0 ? [const Color(0xFFD32F2F), const Color(0xFFEF5350)] : AppColors.gradientGold,
                 isLoading,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               _buildStatCard(
                 'Ventes',
                 stats.pendingOrders.toString(),
-                'À traiter',
+                'À expédier',
                 Icons.shopping_cart_checkout_rounded,
                 AppColors.gradientBlue,
                 isLoading,
@@ -175,20 +199,41 @@ class DashboardScreen extends ConsumerWidget {
   }
 
   Widget _buildStatCard(String label, String value, String subLabel, IconData icon, List<Color> gradient, bool isLoading) {
-    return GlassCard(
-      padding: const EdgeInsets.all(16),
-      borderRadius: 20,
-      gradient: gradient,
-      child: SizedBox(
-        width: 130,
+    return Container(
+      width: 145, // Slightly narrower to prevent horizontal crowding
+      margin: const EdgeInsets.only(bottom: 4), // Add tiny margin for shadows
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: gradient,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: gradient.first.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12), // Reduced padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min, // Fit content
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(icon, color: Colors.white, size: 20),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: Colors.white, size: 16),
+                ),
                 if (isLoading)
                   const SizedBox(
                     width: 12,
@@ -198,13 +243,35 @@ class DashboardScreen extends ConsumerWidget {
               ],
             ),
             const Spacer(),
-            Text(
-              value,
-              style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                value,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 28, // Slightly smaller to fit
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
             ),
             Text(
-              label,
-              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 11, fontWeight: FontWeight.w500),
+              label.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.8,
+              ),
+            ),
+            Text(
+              subLabel,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),

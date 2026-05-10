@@ -32,8 +32,6 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
       final int activeAlerts = (alertsResponse.data as List).length;
 
       // 3. Fetch Pending Orders count
-      // We check orders where the user is the BUYER or SELLER (here we focus on sales for the farmer)
-      // For now we use the general user orders endpoint
       final ordersResponse = await _api.get('orders/user/${user.id}');
       final int pendingOrders = (ordersResponse.data as List)
           .where((o) => o['status'] == 'PENDING')

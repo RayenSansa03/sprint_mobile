@@ -111,3 +111,11 @@ final chatbotControllerProvider = StateNotifierProvider<ChatbotController, List<
   final service = ref.watch(chatbotServiceProvider);
   return ChatbotController(service);
 });
+
+// A separate, auto-disposing provider specifically for the Scan screen.
+// This ensures that its messages don't mix with the main chatbot, 
+// and that it clears its history whenever the user leaves the scan result screen.
+final scanChatbotControllerProvider = StateNotifierProvider.autoDispose<ChatbotController, List<ChatMessage>>((ref) {
+  final service = ref.watch(chatbotServiceProvider);
+  return ChatbotController(service);
+});

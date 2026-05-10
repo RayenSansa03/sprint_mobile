@@ -15,7 +15,7 @@ class LearningScreen extends ConsumerStatefulWidget {
 
 class _LearningScreenState extends ConsumerState<LearningScreen> {
   String selectedCategory = 'All Courses';
-  final List<String> categories = ['All Courses', 'Irrigation', 'Pest Control', 'Fertilization'];
+  final List<String> categories = ['All Courses', 'Agriculture', 'Irrigation', 'Pest Control', 'Fertilization'];
   List<Course> _courses = [];
   bool _isLoading = true;
 

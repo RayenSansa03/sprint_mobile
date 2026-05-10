@@ -31,8 +31,8 @@ class AuthService {
       final data = response.data as Map<String, dynamic>;
       final role = (data['role'] ?? '').toString().toUpperCase();
 
-      // Seuls les PRODUCTEUR peuvent accéder à l'app agriculteur
-      if (role != 'PRODUCTEUR') {
+      // Seuls les PRODUCTEUR et VIEWER peuvent accéder à l'app
+      if (role != 'PRODUCTEUR' && role != 'VIEWER') {
         throw const NotFarmerException();
       }
 

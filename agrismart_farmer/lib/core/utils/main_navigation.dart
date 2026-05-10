@@ -24,6 +24,8 @@ import '../../features/weather/weather_detail_screen.dart';
 import '../../features/weather/weather_models.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/chatbot/chatbot_screen.dart';
+import '../../features/chat/chat_list_screen.dart';
+import '../../features/chat/chat_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -46,9 +48,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!isLoggedIn && !isPublic) {
         return '/login';
       }
-      // Si déjà connecté et qu'on va vers login/register → dashboard
-      if (isLoggedIn && (state.matchedLocation == '/login' || state.matchedLocation == '/register')) {
-        return '/';
+      // Si déjà connecté et qu'on va vers une page publique → dashboard
+      if (isLoggedIn && (
+          state.matchedLocation == '/login' || 
+          state.matchedLocation == '/register' ||
+          state.matchedLocation == '/splash' ||
+          state.matchedLocation == '/onboarding'
+      )) {
+        return authState.role?.toUpperCase() == 'VIEWER' ? '/marketplace' : '/';
+      }
+
+      // Force VIEWER to marketplace if they try to access dashboard or scan/learn
+      if (isLoggedIn && authState.role?.toUpperCase() == 'VIEWER') {
+        final restricted = {'/', '/scan', '/learning'};
+        if (restricted.contains(state.matchedLocation)) {
+          return '/marketplace';
+        }
       }
       return null;
     },
@@ -112,10 +127,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/chatbot',
         builder: (context, state) => const ChatbotScreen(),
       ),
+      GoRoute(
+        path: '/chat/inbox',
+        builder: (context, state) => const ChatListScreen(),
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
-          return MainScreen(child: child);
+          final user = ref.watch(authStateProvider);
+          return MainScreen(child: child, userRole: user?.role ?? '');
         },
         routes: [
           GoRoute(
@@ -144,13 +164,15 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends ConsumerWidget {
   final Widget child;
-  const MainScreen({super.key, required this.child});
+  final String userRole;
+  const MainScreen({super.key, required this.child, required this.userRole});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final location = GoRouterState.of(context).matchedLocation;
+    final isViewer = userRole.toUpperCase() == 'VIEWER';
 
     int getCurrentIndex() {
       if (location.startsWith('/marketplace')) return 1;
@@ -163,7 +185,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
       body: child,
-      bottomNavigationBar: ModernNavigationBar(
+      bottomNavigationBar: isViewer ? null : ModernNavigationBar(
         selectedIndex: getCurrentIndex(),
         onDestinationSelected: (index) {
           switch (index) {

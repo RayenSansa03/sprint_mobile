@@ -11,11 +11,11 @@ class ApiClient {
   final Ref _ref;
 
   ApiClient(this._dio, this._ref) {
-    String baseUrl = 'http://localhost:8081/api/';
+    String baseUrl = 'http://172.20.10.3:8085/api/';
     
     try {
-      if (!kIsWeb && Platform.isAndroid) {
-        baseUrl = 'http://10.0.2.2:8081/api/';
+      if (kIsWeb) {
+        baseUrl = 'http://localhost:8085/api/';
       }
     } catch (_) {} // Handle any platform check errors safely
 
@@ -41,8 +41,10 @@ class ApiClient {
         },
         onError: (DioException e, handler) {
           if (e.response?.statusCode == 401) {
-            // Potential logout logic here
-            _ref.read(authServiceProvider).logout();
+            try {
+              final storage = _ref.read(storageServiceProvider);
+              storage.remove('auth_user');
+            } catch (_) {}
           }
           return handler.next(e);
         },
